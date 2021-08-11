@@ -1,43 +1,53 @@
-const fakeUser = {
-  username: "Marco",
-  loggedIn: false,
+import Video from "../models/Video";
+
+// export const home = (req, res) => {
+//   Video.find({}, (error, videos) => {
+//     return res.render("home", { pageTitle: "Home", videos: [] });
+//   });
+// };
+
+export const home = async (req, res) => {
+  const videos = await Video.find({});
+  console.log(videos);
+  return res.render("home", { pageTitle: "Home", videos });
 };
 
-export const trending = (req, res) => {
-  const videos = [
-    {
-      title: "Fist video",
-      rating: 5,
-      comments: 2,
-      created: "2 minutes ago",
-      views: 59,
-      id: 1,
-    },
-    {
-      title: "Second video",
-      rating: 5,
-      comments: 2,
-      created: "2 minutes ago",
-      views: 59,
-      id: 1,
-    },
-    {
-      title: "Third video",
-      rating: 5,
-      comments: 2,
-      created: "2 minutes ago",
-      views: 59,
-      id: 1,
-    },
-  ];
-  return res.render("home", { pageTitle: "Home", fakeUser: fakeUser, videos });
+export const watch = (req, res) => {
+  const { id } = req.params;
+  return res.render("watch", {
+    pageTitle: `Watching`,
+  });
 };
-export const see = (req, res) => res.render("watch", { pageTitle: "Watch" });
-export const edit = (req, res) => res.render("edit", { pageTitle: "Edit" });
+//getEdit은 form을 화면에 보여주는 함수
+export const getEdit = (req, res) => {
+  const { id } = req.params;
+  return res.render("edit", {
+    pageTitle: `Editing:}`,
+  });
+};
+//postEdit은 변경사항을 저장해주는 함수
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  return res.redirect(`/videos/${id}`);
+};
 
-export const search = (req, res) => res.send("Search", { pageTitle: "Search" });
-export const upload = (req, res) => res.send("Upload", { pageTitle: "Upload" });
-export const deleteVideo = (req, res) => {
-  console.log(req.params);
-  return res.send("Delete Video", { pageTitle: "DeleteVideo" });
+export const getUpload = (req, res) => {
+  return res.render("upload", { pageTitle: "UploadVideo" });
+};
+
+export const postUpload = async (req, res) => {
+  const { title, description, hashtags } = req.body;
+  const video = new Video({
+    title: title,
+    description: description,
+    created: Date.now(),
+    hashtags: hashtags.split(",").map((word) => `#${word}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
+  await video.save();
+  return res.redirect("/");
 };
