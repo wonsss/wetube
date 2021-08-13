@@ -11,17 +11,11 @@ const videoSchema = new mongoose.Schema({
   },
 });
 
-videoSchema.pre("save", async function () {
-  console.log("🚀 ~ file: Video.js ~ line 16 ~ this.hashtags", this.hashtags);
-  console.log(
-    "🚀 ~ file: Video.js ~ line 16 ~ this.hashtags.join()",
-    this.hashtags.join()
-  );
-  // this.hashtags = this.hashtags
-  //   .join()
-  //   .split(",")
-  //   .map((word) => word.trim())
-  //   .map((word) => (word.startsWith("#") ? word : `#${word}`));
+videoSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((word) => word.trim())
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
 });
 
 const Video = mongoose.model("Video", videoSchema);
