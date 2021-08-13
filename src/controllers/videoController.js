@@ -21,7 +21,7 @@ export const getEdit = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id);
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found" });
+    return res.status(404).render("404", { pageTitle: "Video not found" });
   }
   return res.render("edit", {
     pageTitle: `Edit: ${video.title}`,
@@ -35,7 +35,7 @@ export const postEdit = async (req, res) => {
   const { title, description, hashtags } = req.body;
   const video = await Video.exists({ _id: id }); //해당 document 존재 유무만 확인(object는 반환하지 않음)
   if (!video) {
-    return res.render("404", { pageTitle: "Video not found" });
+    return res.status(404).render("404", { pageTitle: "Video not found" });
   }
   await Video.findByIdAndUpdate(id, {
     title,
@@ -60,7 +60,7 @@ export const postUpload = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: "UploadVideo",
       errorMessage: error._message,
     });
