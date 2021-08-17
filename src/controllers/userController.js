@@ -141,11 +141,11 @@ export const getEdit = (req, res) => {
 export const postEdit = async (req, res) => {
   const {
     session: {
-      user: { _id, email: sessionEmail, username: sessionUsername },
+      user: { _id, avatarUrl, email: sessionEmail, username: sessionUsername },
     },
     body: { name, email, username, location },
+    file,
   } = req;
-
   let searchParam = [];
   if (sessionEmail !== email) {
     searchParam.push({ email });
@@ -170,6 +170,7 @@ export const postEdit = async (req, res) => {
     //이메일이나 유저네임의 중복이 없었다면, 여기까지 올 수 있을 것이고, 업데이트한다.
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       name,
       email,
       username,
