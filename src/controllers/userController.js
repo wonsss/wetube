@@ -133,9 +133,89 @@ export const finishGithubLogin = async (req, res) => {
   }
 };
 
-export const edit = (req, res) => res.send("Edit");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", {
+    pageTitle: "Edit Profile",
+  });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id, email: sessionEmail, username: sessionUsername },
+    },
+    body: { name, email, username, location },
+  } = req;
+
+  let searchParam = [];
+  if (sessionEmail !== email) {
+    searchParam.push({ email });
+  } //이메일을 수정했다면 searchParam Dict에 넣는다.
+  if (sessionUsername !== username) {
+    searchParam.push({ username });
+  } //username을 수정했다면 searchParam Dict에 넣는다.
+  if (searchParam.length > 0) {
+    //이메일이나, username 중 하나라도 수정을 했다면
+    const foundUser = await User.findOne({ $or: searchParam }); //User에서 searchParam과 동일하게 있는지 찾아 foundUser에 저장
+    if (foundUser && foundUser._id.toString() !== _id) {
+      //만약 foundUser의 id가 현재 수정하고 있는 유저의 id와 동일하지 않다면(다른 유저의 이메일이나 유저네임과 중복된다는 말이므로)
+      return res.status(400).render("edit-profile", {
+        //수정 불가함을 알리고, return하여 본 postEdit 콘트롤러를 종료한다.
+        pageTitle: "Edit Profile",
+        errorMessage: "This username/email is already taken.",
+      });
+    }
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    //이메일이나 유저네임의 중복이 없었다면, 여기까지 올 수 있을 것이고, 업데이트한다.
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
+};
+
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirmation },
+  } = req;
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  }
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the confirmation.",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  return res.redirect("/users/logout");
+};
+
 export const see = (req, res) => res.send("See");
