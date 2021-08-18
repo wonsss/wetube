@@ -16,6 +16,8 @@ html(lang="ko")
                         li 
                             a(href="/users/edit") Edit Profile
                         li 
+                            a(href=`/users/${loggedInUser._id}`) My profile
+                        li 
                             a(href="/users/logout") Log out
                     else
                         li
@@ -24,7 +26,6 @@ html(lang="ko")
                             a(href="/login") Login
                     li  
                         a(href="/search") Search
-
         main
             block content 
     include partials/footer.pug
