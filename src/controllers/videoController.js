@@ -20,9 +20,15 @@ export const watch = async (req, res) => {
 //getEdit은 form을 화면에 보여주는 함수
 export const getEdit = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
   const video = await Video.findById(id);
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
   }
   return res.render("edit", {
     pageTitle: `Edit: ${video.title}`,
@@ -33,10 +39,17 @@ export const getEdit = async (req, res) => {
 //postEdit은 변경사항을 저장해주는 함수
 export const postEdit = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
   const { title, description, hashtags } = req.body;
-  const video = await Video.exists({ _id: id }); //해당 document 존재 유무만 확인(object는 반환하지 않음)
+  const video = await Video.findById(id);
+
   if (!video) {
     return res.status(404).render("404", { pageTitle: "Video not found" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
   }
   await Video.findByIdAndUpdate(id, {
     title,
@@ -52,12 +65,12 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
   const {
-    user: {_id},
+    user: { _id },
   } = req.session;
-  const { path : fileUrl } = req.file;
+  const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body;
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       title,
       description,
       fileUrl,
@@ -65,6 +78,11 @@ export const postUpload = async (req, res) => {
       createdAt: Date.now(),
       hashtags: Video.formatHashtags(hashtags),
     });
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
+    //^ array에 요소 추가할 때는 push
+    return res.redirect("/");
   } catch (error) {
     console.log(error);
     return res.status(400).render("upload", {
@@ -72,12 +90,24 @@ export const postUpload = async (req, res) => {
       errorMessage: error._message,
     });
   }
-  return res.redirect("/");
 };
 
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
+  const {
+    user: { _id },
+  } = req.session;
+  const video = await Video.findById(id);
+  const user = await User.findById(_id);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "Video not found" });
+  }
+  if (String(video.owner) !== String(_id)) {
+    return res.status(403).redirect("/");
+  }
   await Video.findByIdAndDelete(id);
+  user.videos.splice(user.videos.indexOf(id), 1);
+  user.save();
   return res.redirect("/");
 };
 
