@@ -1,9 +1,10 @@
 extends base
 
 block content
-    if errorMessage
-        span=errorMessage
-    img(src="/"+loggedInUser.avatarUrl, width="100", height="100")
+    if loggedInUser.avatarUrl
+        img.avatar(src="/" + loggedInUser.avatarUrl)
+    else
+        span.avatar 😀
     form(method="POST", enctype="multipart/form-data")
         label(for="avatar") Avatar
         input(type="file", id="avatar", name="avatar", accept="image/*")
@@ -12,6 +13,7 @@ block content
         input(placeholder="Username", name="username", type="text", required, value=loggedInUser.username)
         input(placeholder="Location", name="location", type="text", required, value=loggedInUser.location)
         input(type="submit", value="Update Profile")
-        hr
+    
         if !loggedInUser.socialOnly
-            a(href="change-password") Change Password
+            div.edit-profile__password
+                a(href="change-password") Change Password
