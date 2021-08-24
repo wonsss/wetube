@@ -20,7 +20,17 @@
 }
 
 .video-watch {
-  display: flex;
+  width: 720px;
+  height: 480px;
+  margin: 0 auto;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
+}
+
+.video-desc {
+  line-height: 130%;
+  font-size: 18px;
+  a {
+    text-decoration: underline;
+  }
 }

@@ -2,6 +2,7 @@ doctype html
 html(lang="ko")
     head
         title #{pageTitle} | Wetube
+        link(rel="shortcut icon" href="#")
         link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css")
         link(rel="stylesheet" href="/static/css/styles.css")
     body
@@ -9,4 +10,4 @@ html(lang="ko")
         main
             block content 
         include partials/footer
-    script(src="/static/js/main.js")
+    block scripts
