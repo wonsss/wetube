@@ -4,7 +4,10 @@ include ../mixins/video
 
 
 block content
-    img(src="/" + user.avatarUrl).avatar
+    if (typeof(loggedInUser.avatarUrl) !== 'undefined')
+        img.avatar(src="/" + loggedInUser.avatarUrl)
+    else
+        span.avatar 😀
     div.profile__data
         h3=user.name
     div.video-grid
