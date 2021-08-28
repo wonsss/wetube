@@ -36,8 +36,8 @@ main {
   margin-top: 50px;
 }
 
-// video#preview {
-//   transform: rotateY(180deg);
-//   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
-//   -moz-transform: rotateY(180deg); /* Firefox */
-// }
+video#preview {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
