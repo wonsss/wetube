@@ -2,7 +2,7 @@ extends base.pug
 
 block content 
     div
-        video#preview
+        video#preview(class="video-js vjs-theme-city")
         button#startBtn Start Recording
     if errorMessage
         span=errorMessage
