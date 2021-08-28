@@ -17,7 +17,7 @@ const handleDownload = async () => {
   await ffmpeg.run("-i", "recording.webm", "-r", "60", "output.mp4");
   await ffmpeg.run(
     "-i",
-    "recording.sebm",
+    "recording.webm",
     "-ss",
     "00:00:01",
     "-frames:v",
