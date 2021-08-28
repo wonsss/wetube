@@ -1,7 +1,7 @@
 extends base.pug
 
 block content
-    div#videoContainer
+    div#videoContainer(data-id=video._id)
         video(src="/" + video.fileUrl).video-watch
         div#videoControls.videoControls
             div.wrap
@@ -18,7 +18,7 @@ block content
                 input(type="range", step="0.05",min="0", max="1")#volume 
                 span#mute 
                     i.fas.fa-volume-up
-             
+
                 span#fullScreen
                     i.fas.fa-expand
     //-

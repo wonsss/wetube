@@ -9,7 +9,7 @@ const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
-const fullScreenIcon = fullScreenBtn.querySelector("i");
+const fullScreenBtnIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
@@ -35,6 +35,34 @@ video.onvolumechange = () => {
 const handlePlayClick = () => {
   video.paused ? video.play() : video.pause();
   playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+};
+
+const handlePlayClickArea = (e) => {
+  if (
+    e.target === playBtnIcon ||
+    e.target === muteBtnIcon ||
+    e.target === volumeRange ||
+    e.target === fullScreenBtnIcon ||
+    e.target === timeline ||
+    e.target === currentTime ||
+    e.target === totalTime
+  ) {
+    return;
+  } else {
+    video.paused ? video.play() : video.pause();
+    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+  }
+};
+
+const handlePlayClickSpacebar = (e) => {
+  console.log(e.keyCode);
+  if (e.keyCode === 32) {
+    e.preventDefault();
+    handlePlayClick();
+  } else if (e.keyCode === 13) {
+    e.preventDefault();
+    handleFullScreen();
+  }
 };
 
 const handleMute = () => {
@@ -128,12 +156,22 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 2000);
 };
 
+const handleEnded = () => {
+  const { id } = videoContainer.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
+};
+
 playBtn.addEventListener("click", handlePlayClick);
 muteBtn.addEventListener("click", handleMute);
 volumeRange.addEventListener("input", handleVolume);
 video.addEventListener("timeupdate", hadnleTimeUpdate);
+video.addEventListener("ended", handleEnded);
 timeline.addEventListener("input", handleTimeRange);
-video.addEventListener("loadeddata", handleLoadedMetadata);
+video.addEventListener("loadedmetadata", handleLoadedMetadata);
 fullScreenBtn.addEventListener("click", handleFullScreen);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
+videoContainer.addEventListener("click", handlePlayClickArea);
+window.addEventListener("keydown", handlePlayClickSpacebar);
