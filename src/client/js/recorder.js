@@ -17,20 +17,20 @@ const handleStart = () => {
   startBtn.innerText = "Stop Recording";
   startBtn.removeEventListener("click", handleStart);
   startBtn.addEventListener("click", handleStop);
-
   recorder = new MediaRecorder(stream);
   recorder.ondataavailable = (event) => {
     const videoFile = URL.createObjectURL(event.data);
     video.srcObject = null;
     video.src = videoFile;
     video.loop = true;
+    video.play();
   };
   recorder.start();
 };
 
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
+    audio: false,
     video: true,
   });
   video.srcObject = stream;
