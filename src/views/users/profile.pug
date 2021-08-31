@@ -2,7 +2,7 @@ extends ../base
 include ../mixins/video
 
 block content
-    if (typeof(loggedInUser.avatarUrl) !== 'undefined')
+    if loggedInUser.avatarUrl
         img.avatar(src="/" + loggedInUser.avatarUrl)
     else
         span.avatar 😀 

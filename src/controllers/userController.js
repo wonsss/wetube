@@ -55,9 +55,10 @@ export const postLogin = async (req, res) => {
   }
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
+    req.flash("error", "Password not matched");
+
     return res.status(400).render("login", {
       pageTitle,
-      errorMessage: "Wrong password",
     });
   }
 
@@ -159,10 +160,10 @@ export const postEdit = async (req, res) => {
     const foundUser = await User.findOne({ $or: searchParam }); //User에서 searchParam과 동일하게 있는지 찾아 foundUser에 저장
     if (foundUser && foundUser._id.toString() !== _id) {
       //만약 foundUser의 id가 현재 수정하고 있는 유저의 id와 동일하지 않다면(다른 유저의 이메일이나 유저네임과 중복된다는 말이므로)
+      req.flash("error", "This username/email is already taken.");
       return res.status(400).render("edit-profile", {
         //수정 불가함을 알리고, return하여 본 postEdit 콘트롤러를 종료한다.
         pageTitle: "Edit Profile",
-        errorMessage: "This username/email is already taken.",
       });
     }
   }
@@ -184,12 +185,18 @@ export const postEdit = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  req.session.destroy();
+  req.flash("info", "Bye Bye");
+  req.session.loggedIn = false;
+  req.session.user = null;
+
+  // req.session.destroy();
   return res.redirect("/");
 };
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "Soicial login user can't change password.");
+
     return res.redirect("/");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
@@ -217,6 +224,7 @@ export const postChangePassword = async (req, res) => {
   }
   user.password = newPassword;
   await user.save();
+  req.flash("info", "Password updated");
   return res.redirect("/users/logout");
 };
 
