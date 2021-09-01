@@ -82,10 +82,17 @@ video#preview {
   }
 }
 
-.video__comments {
+.video__comment-form {
   display: flex;
   flex-direction: column;
-  max-width: 320px;
+  max-width: 1200px;
+  width: 100%;
+}
+.video__comments {
+  display: flex;
+  line-height: 150%;
+  flex-direction: column;
+  max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   margin-top: 20px;
@@ -95,7 +102,14 @@ video#preview {
     background-color: white;
     color: black;
     margin-bottom: 10px;
+    .comment__createdAt {
+      margin-left: 7px;
+    }
+    .comment__text {
+      margin-left: 25px;
+    }
     .deleteCommentBtn {
+      float: right;
       cursor: pointer;
     }
   }

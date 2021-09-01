@@ -26,6 +26,7 @@ block content
         p.video__title=video.title
         small.video__owner Uploaded by 
             a(href=`/users/${video.owner._id}`)=video.owner.name
+        br
         small.video__createdAt=new Date(video.createdAt).toLocaleDateString("ko-kr", {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
         if String(video.owner._id) === String(loggedInUser._id)
             a(href=`${video.id}/edit`) Edit Video &rarr;
@@ -35,14 +36,16 @@ block content
     if loggedIn
         div.video__add-comments
             form.video__comment-form#commentForm
-                textarea(cols="30", rows="10", placeholder="Write nice a comment")
+                textarea(cols="30", rows="3", placeholder="Write nice a comment")
                 button Add Comment
     div.video__comments
         ul 
             each comment in video.comments.reverse()
                 li.video__comment(data-id=comment.id)
                     i.fas.fa-comment 
-                    span #{ comment.text}
+                    span.comment__createdAt #{new Date(comment.createdAt).toLocaleDateString("ko-kr", {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric'})}
+                    br
+                    span.comment__text 익명: #{comment.text}
                     if String(comment.owner._id) === String(loggedInUser._id)
                         span.deleteCommentBtn ❌
                         
