@@ -37,24 +37,58 @@ const handlePlayClick = () => {
   playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
 
+let DELAY = 200;
+let clicks = 0;
+let clickTimer = null;
+
 const handlePlayClickArea = (e) => {
-  if (
-    e.target === playBtnIcon ||
-    e.target === muteBtnIcon ||
-    e.target === volumeRange ||
-    e.target === fullScreenBtnIcon ||
-    e.target === timeline ||
-    e.target === currentTime ||
-    e.target === totalTime
-  ) {
-    return;
+  clicks++;
+  if (clicks === 1) {
+    clickTimer = setTimeout(function () {
+      if (
+        e.target === playBtnIcon ||
+        e.target === muteBtnIcon ||
+        e.target === volumeRange ||
+        e.target === fullScreenBtnIcon ||
+        e.target === timeline ||
+        e.target === currentTime ||
+        e.target === totalTime
+      ) {
+        clicks = 0;
+        return;
+      } else {
+        video.paused ? video.play() : video.pause();
+        playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+      }
+      clicks = 0;
+    }, DELAY);
   } else {
-    video.paused ? video.play() : video.pause();
-    playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
+    clearTimeout(clickTimer);
+    if (
+      e.target === playBtnIcon ||
+      e.target === muteBtnIcon ||
+      e.target === volumeRange ||
+      e.target === fullScreenBtnIcon ||
+      e.target === timeline ||
+      e.target === currentTime ||
+      e.target === totalTime
+    ) {
+      return;
+    } else {
+      if (!document.fullscreenElement) {
+        videoContainer.requestFullscreen();
+        fullScreenBtnIcon.classList = "fas fa-expand";
+      } else {
+        document.exitFullscreen();
+        fullScreenBtnIcon.classList = "fas fa-compress";
+      }
+    }
+    clicks = 0;
   }
 };
 
 const handlePlayClickSpacebar = (e) => {
+  console.log("hi");
   if (e.keyCode === 32) {
     e.preventDefault();
     handlePlayClick();
@@ -173,4 +207,10 @@ fullScreenBtn.addEventListener("click", handleFullScreen);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 videoContainer.addEventListener("click", handlePlayClickArea);
-window.addEventListener("keydown", handlePlayClickSpacebar);
+videoContainer.addEventListener("keydown", handlePlayClickSpacebar);
+window.onload = function getFocus() {
+  videoContainer.focus();
+};
+window.addEventListener("dblclick", function ignore(e) {
+  e.preventDefault();
+});

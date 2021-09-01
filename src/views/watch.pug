@@ -1,7 +1,7 @@
 extends base.pug
 
 block content
-    div#videoContainer(data-id=video._id)
+    div#videoContainer(data-id=video._id, tabindex="0")
         video(src="/" + video.fileUrl).video-watch
         div#videoControls.videoControls
             div.wrap
