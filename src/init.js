@@ -3,6 +3,7 @@ import "dotenv/config";
 import "./db"; //db.js 파일 자체를 import하는 것이고, 이로 인해 내 server가 mongo에 연결된다.
 import "./models/Video";
 import "./models/User";
+import "./models/Comment";
 import app from "./server";
 
 const PORT = 4000;
