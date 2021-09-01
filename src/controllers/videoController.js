@@ -12,7 +12,6 @@ export const home = async (req, res) => {
 export const watch = async (req, res) => {
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
-  console.log(video);
   if (!video) {
     return res.render("404", { pageTitle: "Video not found" });
   }
@@ -149,7 +148,8 @@ export const createComment = async (req, res) => {
     body: { text },
     params: { id },
   } = req;
-  const video = await Video.findById(id);
+  const commentUser = await User.findById(user._id);
+  const video = await Video.findById(id).populate("owner").populate("comments");
   if (!video) {
     return res.sendStatus(404);
   }
@@ -161,5 +161,26 @@ export const createComment = async (req, res) => {
   video.comments.push(comment._id);
   video.save();
 
+  commentUser.comments.push(comment._id);
+  commentUser.save();
+
   return res.status(201).json({newCommentId:comment._id});
 };
+
+export const handleDeleteComment = async (req, res) => {
+  const {id} = req.params;
+  const comment = await Comment.findById(id).populate("video").populate("owner");
+  if(!comment) {
+    return res.sendStatus(404);
+  }
+  const videoId = comment.video._id;
+  const userId = comment.owner._id;
+  const video = await Video.findById(videoId);
+  const commentUser = await User.findById(userId);
+  commentUser.comments.splice(commentUser.comments.indexOf(id), 1);
+  video.comments.splice(video.comments.indexOf(id), 1);
+  commentUser.save();
+  video.save();
+  Comment.findByIdAndRemove(id);
+  return res.sendStatus(200);
+} 

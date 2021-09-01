@@ -95,5 +95,8 @@ video#preview {
     background-color: white;
     color: black;
     margin-bottom: 10px;
+    .deleteCommentBtn {
+      cursor: pointer;
+    }
   }
 }
