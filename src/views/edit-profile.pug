@@ -10,7 +10,7 @@ block content
     //-         else
     //-             img.avatar(src=loggedInUser.avatarUrl)
 
-    if loggedInUser.avatarUrl === ""
+    if !loggedInUser.avatarUrl
         span.avatar 😀
     else
         if isHeroku

@@ -16,7 +16,7 @@ block content
     //-         else
     //-             img.avatar(src=user.avatarUrl)
 
-    if user.avatarUrl === ""
+    if !user.avatarUrl
         span.avatar 😀
     else
         if isHeroku

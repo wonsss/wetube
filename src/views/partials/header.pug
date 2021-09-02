@@ -29,7 +29,7 @@ header
                         //-         else
                         //-             img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
 
-                        if loggedInUser.avatarUrl === ""
+                        if !loggedInUser.avatarUrl
                             span.header__avatar 😀
                         else
                             if isHeroku
