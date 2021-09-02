@@ -2,7 +2,7 @@ extends base.pug
 
 block content
     div#videoContainer(data-id=video._id, tabindex="0")
-        video(src=video.fileUrl).video-watch
+        video(src=video.fileUrl, crossorigin).video-watch
         div#videoControls.videoControls
             div.wrap
                 input(type="range", step="0.5", value=0, min="0")#timeline.videoControls__timeline

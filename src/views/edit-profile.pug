@@ -6,7 +6,7 @@ block content
     else
         if loggedInUser.avatarUrl
             if loggedInUser.avatarUrl.includes("github")
-                img.avatar(src=loggedInUser.avatarUrl)
+                img.avatar(src=loggedInUser.avatarUrl, crossorigin)
             else
                 img.avatar(src=loggedInUser.avatarUrl)
     form(method="POST", enctype="multipart/form-data")

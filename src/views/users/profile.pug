@@ -12,7 +12,7 @@ block content
     else
         if user.avatarUrl
             if user.avatarUrl.includes("github")
-                img.avatar(src=user.avatarUrl)
+                img.avatar(src=user.avatarUrl, crossorigin)
             else
                 img.avatar(src=user.avatarUrl)
 
