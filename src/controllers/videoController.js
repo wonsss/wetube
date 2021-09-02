@@ -10,6 +10,7 @@ export const home = async (req, res) => {
 };
 
 export const watch = async (req, res) => {
+  res.set({ "access-control-allow-origin": "*" });
   res.header("Cross-Origin-Embedder-Policy", "require-corp");
   res.header("Cross-Origin-Opener-Policy", "same-origin");
   const { id } = req.params;
