@@ -15,14 +15,20 @@ header
                     a(href="/users/logout") Log out
                 li
                     a(href=`/users/${loggedInUser._id}`)
-                        if loggedInUser.avatarUrl.includes("github")
-                            img.header__avatar(src=loggedInUser.avatarUrl)
+                        //- if loggedInUser.avatarUrl
+                        //-     img.header__avatar(src=loggedInUser.avatarUrl)
+                        //- else
+                        //-     span.header__avatar 😀
+
+                        if loggedInUser.avatarUrl === ""
+                            span.header__avatar 😀
                         else
-                            img.header__avatar(src="/" + loggedInUser.avatarUrl)
+                            if loggedInUser.avatarUrl
+                                if loggedInUser.avatarUrl.includes("github")
+                                    img.header__avatar(src=loggedInUser.avatarUrl)
+                                else
+                                    img.header__avatar(src=loggedInUser.avatarUrl)
 
-                            //- span.header__avatar 😀
-
-                            
             else
                 li
                     a(href="/join").header__btn Join
