@@ -34,12 +34,13 @@ app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 
-app.use((req, res, next) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
-  next();
-});
 app.use("/videos", videoRouter);
 app.use("/api", apiRouter);
 
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
 export default app; //app을 export한다
