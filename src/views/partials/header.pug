@@ -20,14 +20,22 @@ header
                         //- else
                         //-     span.header__avatar 😀
 
+                        //- if loggedInUser.avatarUrl === ""
+                        //-     span.header__avatar 😀
+                        //- else
+                        //-     if loggedInUser.avatarUrl
+                        //-         if loggedInUser.avatarUrl.includes("github")
+                        //-             img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
+                        //-         else
+                        //-             img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
+
                         if loggedInUser.avatarUrl === ""
                             span.header__avatar 😀
                         else
-                            if loggedInUser.avatarUrl
-                                if loggedInUser.avatarUrl.includes("github")
-                                    img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
-                                else
-                                    img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
+                            if isHeroku
+                                img.header__avatar(src=loggedInUser.avatarUrl, crossorigin)
+                            else
+                                img.header__avatar(src="/"+loggedInUser.avatarUrl)
 
             else
                 li
