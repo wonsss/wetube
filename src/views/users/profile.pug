@@ -14,7 +14,7 @@ block content
             if user.avatarUrl.includes("github")
                 img.avatar(src=user.avatarUrl)
             else
-                span.avatar 😀
+                img.avatar(src=user.avatarUrl)
 
     div.profile__data
         h3=user.name

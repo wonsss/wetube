@@ -8,7 +8,7 @@ block content
             if loggedInUser.avatarUrl.includes("github")
                 img.avatar(src=loggedInUser.avatarUrl)
             else
-                span.avatar 😀
+                img.avatar(src=loggedInUser.avatarUrl)
     form(method="POST", enctype="multipart/form-data")
         label(for="avatar") Avatar
         input(type="file", id="avatar", name="avatar", accept="image/*")
