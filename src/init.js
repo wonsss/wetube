@@ -6,7 +6,8 @@ import "./models/User";
 import "./models/Comment";
 import app from "./server";
 
-const PORT = 4000;
+// const PORT = 4000;
+const PORT = process.env.PORT || 4000; //Heroku에서 실행될 때 Heroku가 이 PORT 변수를 전달해 준다. 그렇지 않으면 4000 포트
 
 const handleListening = () =>
   console.log(`✅ Server listening on port http://localhost:${PORT}`);
