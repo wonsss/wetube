@@ -18,18 +18,23 @@ const corsOptions = {
   methods: ["GET", "POST", "PATCH", "DELETE"],
 };
 app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.header("Cross-Origin-Embedder-Policy", "credentialless");
+  res.header("Cross-Origin-Opener-Policy", "same-origin");
+  // res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  next();
+});
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
-
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-    crossOriginEmbedderPolicy: true,
-    crossOriginOpenerPolicy: "same-origin",
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: false,
+//     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+//     crossOriginEmbedderPolicy: true,
+//     crossOriginOpenerPolicy: "same-origin",
+//   })
+// );
 
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
@@ -54,10 +59,4 @@ app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 app.use("/api", apiRouter);
 
-// app.use((req, res, next) => {
-//   res.header("Cross-Origin-Embedder-Policy", "credentialless");
-//   res.header("Cross-Origin-Opener-Policy", "same-origin");
-//   res.header("Cross-Origin-Resource-Policy", "cross-origin");
-//   next();
-// });
 export default app; //app을 export한다

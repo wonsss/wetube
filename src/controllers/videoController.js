@@ -10,9 +10,9 @@ export const home = async (req, res) => {
 };
 
 export const watch = async (req, res) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
-  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  // res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  // res.header("Cross-Origin-Opener-Policy", "same-origin");
+  // res.header("Cross-Origin-Resource-Policy", "cross-origin");
   const { id } = req.params;
   const video = await Video.findById(id).populate("owner").populate("comments");
   if (!video) {
@@ -68,9 +68,9 @@ export const postEdit = async (req, res) => {
 };
 
 export const getUpload = (req, res) => {
-  res.header("Cross-Origin-Embedder-Policy", "require-corp");
-  res.header("Cross-Origin-Opener-Policy", "same-origin");
-  res.header("Cross-Origin-Resource-Policy", "cross-origin");
+  // res.header("Cross-Origin-Embedder-Policy", "require-corp");
+  // res.header("Cross-Origin-Opener-Policy", "same-origin");
+  // res.header("Cross-Origin-Resource-Policy", "cross-origin");
   return res.render("upload", { pageTitle: "UploadVideo" });
 };
 
