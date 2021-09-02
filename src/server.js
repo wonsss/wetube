@@ -55,6 +55,7 @@ app.use("/api", apiRouter);
 app.use((req, res, next) => {
   res.header("Cross-Origin-Embedder-Policy", "credentialless");
   res.header("Cross-Origin-Opener-Policy", "same-origin");
+  // res.header("Access-Control-Allow-Origin", "*");
   // res.header("Cross-Origin-Resource-Policy", "cross-origin");
   next();
 });
