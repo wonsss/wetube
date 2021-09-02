@@ -12,9 +12,9 @@ block content
     else
         if user.avatarUrl
             if user.avatarUrl.includes("github")
-                img.avatar(src=user.avatarUrl, crossorigin)
+                img.avatar(src=user.avatarUrl)
             else
-                img.avatar(src=user.avatarUrl, crossorigin)
+                span.avatar 😀
 
     div.profile__data
         h3=user.name
