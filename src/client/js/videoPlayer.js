@@ -88,7 +88,6 @@ const handlePlayClickArea = (e) => {
 };
 
 const handlePlayClickSpacebar = (e) => {
-  console.log("hi");
   if (e.keyCode === 32) {
     e.preventDefault();
     handlePlayClick();

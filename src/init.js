@@ -1,4 +1,4 @@
-// require("dotenv").config();
+import "regenerator-runtime";
 import "dotenv/config";
 import "./db"; //db.js 파일 자체를 import하는 것이고, 이로 인해 내 server가 mongo에 연결된다.
 import "./models/Video";
