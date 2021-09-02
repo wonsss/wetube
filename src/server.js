@@ -1,3 +1,4 @@
+import cors from "cors";
 import morgan from "morgan";
 import express from "express";
 import session from "express-session";
@@ -11,6 +12,11 @@ import flash from "express-flash";
 
 const app = express(); //expres 애플리케이션을 만든다. 여기서 app을 configure 하고
 const logger = morgan("dev");
+
+const corsOptions = {
+  methods: ["GET", "POST", "PATCH", "DELETE"],
+};
+app.use(cors(corsOptions));
 
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
